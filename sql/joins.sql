@@ -1,22 +1,20 @@
-How can you produce a list of the start times for bookings by members named 'David Farrell'?
+# Joins Section
 
-bselect starttime
-from cd.bookings inner join cd.members on cd.bookings.memid = cd.members.memid
-where surname = 'Farrell' AND firstname = 'David'
+-- How can you produce a list of the start times for bookings by members named 'David Farrell'?
+SELECT starttime
+FROM cd.bookings
+INNER JOIN cd.members ON cd.bookings.memid = cd.members.memid
+WHERE surname = 'Farrell' AND firstname = 'David';
 
-How can you produce a list of the start times for bookings for tennis courts, for the date '2012-09-21'? Return a list of start time and facility name pairings, ordered by the time.
+-- How can you produce a list of the start times for bookings for tennis courts, for the date '2012-09-21'? Return a list of start time and facility name pairings, ordered by the time.
+SELECT starttime AS start, name
+FROM cd.bookings
+INNER JOIN cd.facilities ON cd.bookings.facid = cd.facilities.facid
+WHERE DATE(starttime) = '2012-09-21' AND name LIKE 'Tennis Court%'
+ORDER BY starttime;
 
-select starttime as start, name
-from cd.bookings inner join cd.facilities
-on cd.bookings.facid = cd.facilities.facid
-where date(starttime) = '2012-09-21' and name like 'Tennis Court%'
-order by starttime
-
-How can you output a list of all members who have recommended another member? Ensure that there are no duplicates in the list, and that results are ordered by (surname, firstname).
-
-select distinct recs.firstname as firstname, recs.surname as surname
-	from 
-		cd.members mems 
-		inner join cd.members recs
-			on recs.memid = mems.recommendedby
-order by surname, firstname;
+-- How can you output a list of all members who have recommended another member? Ensure that there are no duplicates in the list, and that results are ordered by (surname, firstname).
+SELECT DISTINCT recs.firstname AS firstname, recs.surname AS surname
+FROM cd.members mems
+INNER JOIN cd.members recs ON recs.memid = mems.recommendedby
+ORDER BY surname, firstname;
