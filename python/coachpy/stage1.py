@@ -91,4 +91,24 @@ def count_unique_entries(entry_list):
         i += 1
     return len(unique_foods)
 
+
+def sum_safe_macros(log):
+    total = 0
+    for item in log:
+        if item is None:
+            continue
+        value = int(item)
+        if value < 0:
+            break
+        total += value
+    return total
+
+
+def save_daily_total(filename, calories):
+    if calories is None:
+        return None
+    with open(f"{filename}", "a") as file:
+        file.write(f"{calories}\n")
+
+
 ## coachpy has finished "teaching" the basics, further proceeds to the "gauntlets" (testing until i can solve any problem with a mixup of the above flawlessly for multiple iterations)
