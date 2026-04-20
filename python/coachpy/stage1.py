@@ -110,5 +110,12 @@ def save_daily_total(filename, calories):
     with open(f"{filename}", "a") as file:
         file.write(f"{calories}\n")
 
-
-## coachpy has finished "teaching" the basics, further proceeds to the "gauntlets" (testing until i can solve any problem with a mixup of the above flawlessly for multiple iterations)
+def process_and_Save_log(raw_entries, output_file):
+    i = 0
+    unique_foods = set()
+    clean_names = raw_entries.strip().lower()
+    while i < len(raw_entries):
+        current = raw_entries[i]
+        if current == "stop":
+            break
+        unique_foods.add(current)
