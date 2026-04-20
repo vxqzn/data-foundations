@@ -110,12 +110,33 @@ def save_daily_total(filename, calories):
     with open(f"{filename}", "a") as file:
         file.write(f"{calories}\n")
 
-def process_and_Save_log(raw_entries, output_file):
-    i = 0
+def process_and_save_log(raw_entries, output_file):
+    total_kcal = 0
     unique_foods = set()
-    clean_names = raw_entries.strip().lower()
-    while i < len(raw_entries):
-        current = raw_entries[i]
-        if current == "stop":
+    for entry in raw_entries:
+        food = entry["food"].strip().lower()
+        if food == "stop":
             break
-        unique_foods.add(current)
+        kcal = entry["kcal"]
+        if kcal is None:
+            continue
+        kcal = int(kcal)
+        if food not in unique_foods:
+            unique_foods.add(food)
+            total_kcal += kcal
+            with open(output_file, "a") as file:
+                file.write(f"{food}: {kcal}\n")
+    return total_kcal
+
+def track_unique_calories(entries):
+    total_cals = 0
+    unique_calories = set()
+    for entry in entries:
+        name = entry["item"].strip().lower()
+        cals = entry["cals"]
+        if name in unique_calories:
+            continue
+        unique_calories.add(name)
+        total_cals += cals
+    return total_cals
+
