@@ -1,0 +1,83 @@
+input_weight = "78.0"
+multiplier = 2
+logged_protein = None
+
+target_protein = float(input_weight) * multiplier
+
+if logged_protein is None:
+    current_protein = 0.0
+else:
+    current_protein = logged_protein
+
+remaining_protein = target_protein - current_protein
+
+
+inventory = {"apples": 5, "bananas": 2}
+item_to_check = "oranges"
+
+if item_to_check in inventory:
+    status = "Found it"
+else:
+    status = "Missing"
+
+
+daily_totals = {"protein": 120.5, "fat": 45.0, "carbs": 150.0}
+snack_macros = {"protein": 15.0, "carbs": 20.0, "sugar": 5.0}
+
+for macro, grams in snack_macros.items():
+    if macro not in daily_totals:
+        continue
+    current = daily_totals[macro]
+    daily_totals[macro] = current + grams
+
+
+protein_cal = 4
+carbs_cal = 4
+fat_cal = 9
+
+def calculate_meal_calories(protein, carbs, fat):
+    if protein is None:
+        protein = 0.0
+    if carbs is None:
+        carbs = 0.0
+    if fat is None:
+        fat = 0.0
+    
+    total_cal = protein * protein_cal + carbs * carbs_cal + fat * fat_cal
+
+    return total_cal
+
+
+user_food_input = "   grEEk YoGurt \n"
+user_grams_input = " 200 "
+
+def format_log_entry(raw_name, raw_grams):
+    if raw_name is None:
+        raw_name = "Unknown Food"
+
+    if raw_grams is None:
+        raw_grams = "Invalid Grams"
+
+    raw_name = str(raw_name)
+
+    clean_name = raw_name.strip().title()
+    clean_grams = raw_grams.strip()
+
+    summary = f"{clean_grams}g of {clean_name} logged."
+
+    return summary
+
+
+current_date = "2023-10-25"
+daily_totals = {"protein": 150.0, "fat": 50.0, "carbs": 200.0}
+
+def save_daily_totals(date, totals):
+    if not totals:
+        return
+    
+    log_header = f"---{date}---\n"
+
+    with open("macro_history.txt", "a") as file:
+        file.write(log_header)
+        for macro, grams in totals.items():
+            file.write(f"{macro}: {grams}g\n")
