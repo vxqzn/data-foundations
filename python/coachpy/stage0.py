@@ -81,3 +81,31 @@ def save_daily_totals(date, totals):
         file.write(log_header)
         for macro, grams in totals.items():
             file.write(f"{macro}: {grams}g\n")
+
+
+raw_foods = [
+    {"name": "Chicken Breast", "protein": 31, "carbs": 0},
+    {"name": "Rice", "protein": 2, "carbs": 45},
+    {"name": "Protein Powder", "protein": 25},
+    {"name": "Mystery Meat", "protein": None},
+    {"name": "Apple", "carbs": 25},  # Missing protein key entirely
+    {"name": "Error Food", "protein": -5}
+]
+
+[food.get("name").upper() for food in raw_foods if food is not None and food.get("protein") is not None and food.get("protein") >= 20]
+
+
+food_data = [
+    ("apple", {"kcal": 95, "pro": 0}),
+    ("CHICKEN", {"kcal": 165, "pro": 31}),
+    ("whey", None),
+    ("chicken", {"kcal": 160, "pro": 30}),  # Updated database entry
+    ("beef", {"kcal": 250})                 # Missing "pro" key entirely
+]
+
+food_map = {name.lower(): values.get("pro", 0) for name, values in food_data if values is not None}
+
+
+daily_logs = [2500, None, 1800, 2200, None, 3100, 1900]
+
+gen = sum(log for log in daily_logs if log is not None and log > 2000)
