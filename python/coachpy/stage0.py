@@ -109,3 +109,25 @@ food_map = {name.lower(): values.get("pro", 0) for name, values in food_data if 
 daily_logs = [2500, None, 1800, 2200, None, 3100, 1900]
 
 gen = sum(log for log in daily_logs if log is not None and log > 2000)
+
+
+total_stash = 273
+mag_capacity = 30
+
+final_mags = total_stash // mag_capacity
+surplus_ammo = total_stash % mag_capacity
+
+print(final_mags)
+print(surplus_ammo)
+
+
+van_capacity = 2500
+cargo_weight = 2700
+
+is_maxed = cargo_weight == van_capacity
+is_overweight = cargo_weight > van_capacity
+is_safe = cargo_weight <= van_capacity
+
+print(is_maxed)
+print(is_overweight)
+print(is_safe)
