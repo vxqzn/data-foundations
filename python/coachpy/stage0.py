@@ -131,3 +131,57 @@ is_safe = cargo_weight <= van_capacity
 print(is_maxed)
 print(is_overweight)
 print(is_safe)
+
+
+price = 45
+volume = 12000
+breaking_news = False
+
+execute_buy = (price < 50 and volume > 10000) or breaking_news
+
+print(execute_buy)
+
+
+# Test 1
+stream = "00101101"
+ones_count = 0
+
+for number in stream:
+    if number == "1":
+        ones_count += 1
+
+print(ones_count)
+
+
+# Test 2
+batch_numbers = []
+
+for nr in range(1, 6):
+    multiplied_nr = nr * 100
+    batch_numbers.append(multiplied_nr)
+
+print(batch_numbers)
+
+
+# Test 3
+transactions = [500, -120, 300, -50, -10]
+deposits = []
+withdrawals = []
+
+for num in transactions:
+    if num > 0:
+        deposits.append(num)
+    else:
+        withdrawals.append(num)
+
+print(deposits)
+print(withdrawals)
+
+
+user_input = "fifty"
+
+try:
+    withdrawal_amount = int(user_input)
+    print("Dispensing cash")
+except ValueError:
+    print("Invalid entry. Numbers only.")
