@@ -185,3 +185,17 @@ try:
     print("Dispensing cash")
 except ValueError:
     print("Invalid entry. Numbers only.")
+
+
+# Task 1
+from math import sqrt
+
+sqrtof64 = sqrt(64)
+
+print(sqrt(64))
+print(sqrtof64)
+
+# Task 2
+import platform as pl
+
+print(pl.system())
