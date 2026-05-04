@@ -199,3 +199,52 @@ print(sqrtof64)
 import platform as pl
 
 print(pl.system())
+
+
+def register_calc(*args, **kwargs):
+    total_items = 0
+    total_discount = 0
+
+    for itemvalue in args:
+        total_items += itemvalue
+    
+    for discountvalue in kwargs.values():
+        total_discount += discountvalue
+    
+    total_items -= total_discount
+    
+    if total_items < 0:
+        total_items = 0
+    
+    return total_items
+
+
+# Function args order
+def book_session(name, default_studio="Main", *args, **kwargs):
+    print(name)
+    print(default_studio)
+    print(args)
+    print(kwargs)
+
+
+register_cash = 500
+
+def checkout(name, payment = "Card", *args, **kwargs):
+    global register_cash
+    titems = 0
+    tdiscounts = 0
+
+    for item in args:
+        titems += item
+    for discount in kwargs.values():
+        tdiscounts += discount
+
+    titems -= tdiscounts
+
+    if titems < 0:
+        titems = 0
+    
+    if payment == "Cash":
+        register_cash += titems
+    
+    print(f"Name: {name}, Payment method: {payment}, Paid: {titems}, Left in the register: {register_cash}")
