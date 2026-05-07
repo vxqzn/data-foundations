@@ -62,3 +62,12 @@ FROM guest_checkouts AS gc
 WHERE gc.email_provided IS NULL
 ORDER BY gc.ip_address ASC
 LIMIT 10;
+
+SELECT last_name,
+    salary
+FROM doctors d
+WHERE UPPER(d.status) = 'ACTIVE'
+    AND UPPER(d.specialty) = 'SURGEON'
+ORDER BY d.salary DESC
+FETCH FIRST 3 ROWS ONLY;
+
