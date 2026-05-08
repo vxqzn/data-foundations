@@ -248,3 +248,43 @@ def checkout(name, payment = "Card", *args, **kwargs):
         register_cash += titems
     
     print(f"Name: {name}, Payment method: {payment}, Paid: {titems}, Left in the register: {register_cash}")
+
+# 1
+drop_schedule = ["ShoeA", "ShoeB", "ShoeC", "ShoeD", "ShoeE"]
+
+#2
+supplier_lo = (510.41, 720.51)
+
+#3
+runners_log = {"runner1": 720, "runner2": 420}
+
+
+# Runners problem
+runner_1_clients = ["312-555-1234", "773-555-9999", "847-555-0000"]
+runner_2_clients = ["773-555-9999", "312-555-8888", "312-555-1234"]
+
+check1 = set(runner_1_clients)
+check2 = set(runner_2_clients)
+
+snakes = set.intersection(check1, check2)
+
+print(f"Snakes: {snakes}")
+
+
+# F strings
+runner_name = "Muwop"
+shoes_sold = 15
+price_per_shoe = 200
+owed_to_you = 800
+
+payout_text = f"Yo {runner_name}, you moved x{shoes_sold} pairs. Gross was ${price_per_shoe * shoes_sold}, minus the ${owed_to_you} you owe, your cut is ${price_per_shoe * shoes_sold - owed_to_you}."
+
+plug_fee = 500
+
+cash_today = int(input("How much cash did wee pull today? "))
+
+amount = cash_today - plug_fee
+
+final_message = f"Plug gets ${plug_fee}. We each walk away with ${amount / 3}."
+
+print(final_message)
