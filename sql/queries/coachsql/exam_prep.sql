@@ -204,3 +204,77 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Buget total: ' || v_buget_total);
 END;
 /
+
+CREATE TABLE mecanici (
+    cod_mec NUMBER(4) PRIMARY KEY,
+    nume VARCHAR2(20),
+    specializare VARCHAR2(15),
+    salariu NUMBER(6),
+    data_angajare DATE
+);
+
+CREATE TABLE reparatii (
+    nr_rep NUMBER(6) PRIMARY KEY,
+    data_rep DATE,
+    cod_mec NUMBER(4) REFERENCES mecanici(cod_mec),
+    marca_auto VARCHAR2(20),
+    cost NUMBER(8)
+);
+
+SELECT
+    m.nume,
+    m.specializare,
+    m.salariu * 12 AS venit_anual
+FROM mecanici m
+WHERE UPPER(m.specializare) != 'TINICHIGERIE'
+    AND (m.salariu BETWEEN 3500 AND 6000)
+    AND  (m.data_angajare > TO_DATE('01/01/2020', 'DD/MM/YYYY'))
+ORDER BY venit_anual DESC;
+
+SELECT
+    m.nume,
+    NVL(COUNT(r.nr_rep), 0) AS reparatii,
+    NVL(SUM(r.cost), 0) AS total_reparatii
+FROM mecanici m
+LEFT JOIN reparatii r
+    ON m.cod_mec = r.cod_mec
+GROUP BY m.cod_mec, m.nume
+HAVING SUM(r.cost) > 8000
+    OR COUNT(r.nr_rep) = 0
+ORDER BY total_reparatii DESC;
+
+CREATE OR REPLACE PROCEDURE analiza_performanta IS
+
+    CURSOR belt IS
+        SELECT
+            m.cod_mec AS cod_mec,
+            m.nume AS nume,
+            m.salariu AS salariu,
+            NVL(COUNT(r.nr_rep), 0) AS reparatii,
+            AVG(r.cost) AS cost_mediu_reparatii
+        FROM mecanici m
+        LEFT JOIN reparatii r
+            ON m.cod_mec = r.cod_mec
+        GROUP BY m.cod_mec, m.nume, m.salariu;
+
+    v_rand belt%ROWTYPE;
+
+BEGIN
+    OPEN belt;
+    LOOP
+        FETCH belt INTO v_rand;
+        EXIT WHEN belt%NOTFOUND;
+
+        IF (v_rand.reparatii > 2 AND v_rand.cost_mediu_reparatii > 1500) THEN
+            
+            UPDATE mecanici
+            SET salariu = salariu * 1.15
+            WHERE cod_mec = v_rand.cod_mec;
+
+            DBMS_OUTPUT.PUT_LINE(v_rand.nume || ' - ' || v_rand.reparatii || ' reparatii. Salariu majorat la ' || v_rand.salariu * 1.15);
+        ELSE
+            DBMS_OUTPUT.PUT_LINE(v_rand.nume || ' - ' || v_rand.reparatii || ' reparatii. Fara modificare.');
+        END IF;
+    END LOOP;
+END;
+/
