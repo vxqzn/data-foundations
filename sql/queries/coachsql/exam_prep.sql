@@ -118,3 +118,89 @@ BEGIN
     END LOOP;
 END;
 /
+
+
+------------------------------------------------------------------
+
+
+-- DEPARTAMENTE
+ID_DEP | DENUMIRE     | ORAS
+-------|--------------|----------
+1      | Vanzari      | Timisoara
+2      | IT           | Cluj
+3      | HR           | Timisoara
+4      | Financiar    | Bucuresti
+
+-- ANGAJATI
+ID_ANG | NUME          | PRENUME  | SALARIU | DATA_ANG   | ID_DEP | ID_SEF
+-------|---------------|----------|---------|------------|--------|-------
+1      | Ionescu       | Andrei   | 6200    | 01/03/2019 | 1      | NULL
+2      | Popescu       | Maria    | 7200    | 15/06/2018 | 2      | NULL
+3      | Stan          | Cristian | 4500    | 10/01/2021 | 1      | 1
+4      | Dumitrescu    | Elena    | 8000    | 20/09/2017 | 2      | 2
+5      | Georgescu     | Ion      | 3800    | 05/11/2022 | 3      | NULL
+6      | Popa          | Ana      | 6100    | 12/04/2020 | 4      | NULL
+7      | Marin         | Vlad     | 4200    | 28/07/2021 | 1      | 1
+8      | Nistor        | Ioana    | 5500    | 03/02/2019 | 2      | 2
+9      | Dobre         | Radu     | 3200    | 17/12/2023 | 3      | 5
+10     | Costea        | Simona   | 9500    | 08/08/2016 | 4      | 6
+
+
+-- Function Exercise
+SET SERVEROUTPUT ON;
+
+CREATE OR REPLACE FUNCTION nr_peste_medie(p_id_dep IN NUMBER) RETURN NUMBER IS
+    
+    v_contor NUMBER := 0;
+    v_medie NUMBER;
+
+    CURSOR c_belt IS
+        SELECT a.salariu FROM angajati a JOIN departamente d ON a.id_dep = d.id_dep WHERE d.id_dep = p_id_dep;
+
+    v_rand c_belt%ROWTYPE;
+
+BEGIN
+    SELECT AVG(salariu) INTO v_medie FROM angajati WHERE id_dep = p_id_dep;
+
+    OPEN c_belt;
+    LOOP
+        FETCH c_belt INTO v_rand;
+        EXIT WHEN c_belt%NOTFOUND;
+
+        IF v_rand.salariu >= v_medie THEN
+            v_contor := v_contor + 1;
+        END IF;
+    END LOOP;
+    CLOSE c_belt;
+    
+    RETURN v_contor;
+END;
+/
+
+-- Procedure exercise
+SET SERVEROUTPUT ON;
+
+CREATE OR REPLACE PROCEDURE raport_departament(p_salariu_min IN NUMBER, p_salariu_max IN NUMBER) IS
+
+    CURSOR belt IS
+        SELECT a.nume, a.prenume, d.denumire, a.salariu FROM angajati a JOIN departamente d ON a.id_dep = d.id_dep;
+
+    v_rand belt%ROWTYPE;
+    v_buget_total NUMBER := 0;
+
+BEGIN
+    OPEN belt;
+    LOOP
+        FETCH belt INTO v_rand;
+        EXIT WHEN belt%NOTFOUND;
+
+        IF v_rand.salariu >= p_salariu_min AND v_rand.salariu <= p_salariu_max THEN
+            v_buget_total := v_buget_total + v_rand.salariu;
+            DBMS_OUTPUT.PUT_LINE(v_rand.nume || ' ' || v_rand.prenume || ' - ' || v_rand.denumire || ' - ' || v_rand.salariu);
+        END IF; 
+    END LOOP;
+    CLOSE belt;
+
+    DBMS_OUTPUT.PUT_LINE('Buget total: ' || v_buget_total);
+END;
+/
