@@ -1,0 +1,102 @@
+class Shooter:
+
+    city = 'Chicago'
+
+    def __init__(self, name, accuracy, ammo):
+        self.name = name
+        self.accuracy = accuracy
+        self.ammo = ammo
+    
+    def shoot(self):
+        if self.ammo > 0:
+            print(f"{self.name} is gunnin' em down! Acc: {self.accuracy}, Ammo left: {self.ammo}")
+            self.ammo -= 1
+        elif self.ammo < 1:
+            self.ammo = 0
+            print(f"{self.name} is outta lead! click click! (Ammo: {self.ammo})")
+
+von = Shooter('V.Roy', 'O-Block')
+duck = Shooter('FBG Duck', 'STL')
+print(f"Von: {von.city}; Duck: {duck.city}")
+
+Shooter.city = 'Atlanta'
+print(f"Von: {von.city}; Duck: {duck.city}")
+
+troy = Shooter('T.Roy', 92, 2)
+
+troy.shoot()
+troy.shoot()
+troy.shoot()
+
+print(troy)
+
+
+class TrapHouse:
+    def __init__(self, location, product, stash):
+        self.location = location
+        self.product = product
+        self.stash = stash
+
+    def __str__(self):
+        return f"Operation at {self.location} moving {self.product}. Stash: ${self.stash}."
+    
+    def sell(self, amount):
+        self.stash += amount
+        print(f"//silent Sold: ${amount}, upped stash: ${self.stash}")
+
+
+trap1 = TrapHouse("O'Block", "Work", 500)
+
+trap1.sell(250)
+
+print(trap1)
+
+
+class Member:
+    def __init__(self, name, block):
+        self.name = name
+        self.block = block
+    
+    def rep_set(self):
+        print(f"{self.name} throwing up {self.block}")
+    
+class Shooter(Member):
+    def shoot(self):
+        print(f"{self.name} blowing at the opps")
+    
+class Driver(Member):
+    def drive(self):
+        print(f"{self.name} swervin")
+    
+von = Shooter('Von', "O'Block")
+cdai = Driver('Cdai', '600')
+
+von.rep_set()
+cdai.rep_set()
+
+von.shoot()
+cdai.drive()
+
+
+class Hustler:
+    def __init__(self, name, turf):
+        self.name = name
+        self.turf = turf
+    
+    def brag(self):
+        print(f"{self.name} running {self.turf}")
+
+class Kingpin(Hustler):
+    def __init__(self, name, turf, net_worth):
+        super().__init__(name, turf)
+        self.net_worth = net_worth
+    
+    def brag(self):
+        print(f"{self.name} got ${self.net_worth} tied up in {self.turf}. Untouchable.")
+
+
+bamz = Hustler('Bodega Bamz', 'Spanish Harlem')
+marlo = Kingpin('Marlo', 'West Baltimore', 10000000)
+
+bamz.brag()
+marlo.brag()
