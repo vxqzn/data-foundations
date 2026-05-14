@@ -18,3 +18,6 @@ class Food:
         total = total_protein_cals + total_carbs_cals + total_fats_cals
 
         return total
+    
+    def __str__(self):
+        return f"{self.name}; Protein: {self.gprotein}; Carbs: {self.gcarbs}; Fats: {self.gfats} || {self.calculate_calories()} kcal."
