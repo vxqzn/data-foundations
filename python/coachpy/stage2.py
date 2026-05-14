@@ -100,3 +100,37 @@ marlo = Kingpin('Marlo', 'West Baltimore', 10000000)
 
 bamz.brag()
 marlo.brag()
+
+
+class EmptyPlateError(Exception):
+    pass
+
+class NegativeMacroError(Exception):
+    pass
+
+class MacroTracker:
+
+    def __init__(self):
+        self.total_protein = 0
+        self.total_carbs = 0
+        self.total_fats = 0
+
+
+    def log_meal(self, food_name, protein, carbs, fats):
+        
+        if not isinstance(food_name, str) or not food_name.strip():
+            raise EmptyPlateError(f"Can't be an empty string.")
+        
+
+        for name, value in [("protein", protein), ("carbs", carbs), ("fats", fats)]:
+            if not isinstance(value, (int, float)):
+                raise TypeError(f"{name} gotta be a number")
+            if value < 0:
+                raise NegativeMacroError(f"{name} can't be negative")
+
+        
+        self.total_protein += protein
+        self.total_carbs += carbs
+        self.total_fats += fats
+                
+        return (f"{food_name}, with P: {protein}, C: {carbs}, F: {fats} was logged succesfully. New totals - P: {self.total_protein}, C: {self.total_carbs}, F: {self.total_fats}")
