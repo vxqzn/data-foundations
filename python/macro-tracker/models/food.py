@@ -1,4 +1,4 @@
-class inputError(Exception):
+class NoStringError(Exception):
     pass
 
 class Food:
@@ -8,19 +8,19 @@ class Food:
     fats_cal = 9
 
     def __init__(self, name, gprotein, gcarbs, gfats):
-        self.name = name
-        self.gprotein = gprotein
-        self.gcarbs = gcarbs
-        self.gfats = gfats
-
         if not isinstance(name, str) or not name.strip():
-            raise inputError(f"{name} must be a complete string.")
+            raise NoStringError(f"{name} must be a complete string.")
         
         for label, val in [("gprotein", gprotein), ("gcarbs", gcarbs), ("gfats", gfats)]:
             if not isinstance(val, (int, float)):
                 raise TypeError(f"{label} must be a number.")
             if val < 0:
                 raise ValueError(f"{label} can't be negative.")
+        
+        self.name = name
+        self.gprotein = gprotein
+        self.gcarbs = gcarbs
+        self.gfats = gfats
         
     def calculate_calories(self):
         total_protein_cals = self.gprotein * Food.protein_cal
