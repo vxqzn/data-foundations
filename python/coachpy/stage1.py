@@ -164,3 +164,10 @@ def process_and_save_log(raw_entries, output_file):
             file.write(f"{food}: {cal}\n")
             total_cal += cal
         return total_cal
+
+def register_squad(leader, *grunts):
+    return f"Leader: {leader}, Grunts: {len(grunts)}"
+
+incoming_crew = ["Mitch", "Jimmy", "Carl", "Rick"]
+
+register_squad(*incoming_crew)

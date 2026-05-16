@@ -134,3 +134,74 @@ class MacroTracker:
         self.total_fats += fats
                 
         return (f"{food_name}, with P: {protein}, C: {carbs}, F: {fats} was logged succesfully. New totals - P: {self.total_protein}, C: {self.total_carbs}, F: {self.total_fats}")
+
+
+class InsufficientFundsError(Exception):
+    pass
+
+def process_transfer(wallet_balance, transfer_amount):
+    if transfer_amount > wallet_balance:
+        raise InsufficientFundsError
+    else:
+        remaining_balance = wallet_balance - transfer_amount
+        return f"Remaining balance: {remaining_balance}"
+    
+balance = 100
+transfering = 500
+
+try: 
+    process_transfer(balance, transfering)
+except InsufficientFundsError:
+    print(f"Transaction declined: not enough funds")
+except Exception:
+    print(f"System error")
+
+
+ammo = [5.56, 7.62, 9.00]
+
+ammo_iterator = iter(ammo)
+
+while True:
+    try:
+        bullet = next(ammo_iterator)
+        print(f"Current: {bullet}")
+    except StopIteration:
+        print(f"Click. Empty.")
+        break
+
+
+def build_tax_calculator(city):
+    rates = {"Chicago": 0.1025, "NY": 0.08875, "Miami": 0.07}
+    requested_rate = rates.get(city)
+
+    def calculate_total(amount):
+        final_price = amount + requested_rate * amount
+        return final_price
+    
+    return calculate_total
+
+
+chicago_calc = build_tax_calculator("Chicago")
+miami_calc = build_tax_calculator("Miami")
+
+print(chicago_calc(100))
+print(miami_calc(100))
+
+CURRENT_USER_ROLE = "intern"
+
+def require_admin(func):
+    def checker():
+        if CURRENT_USER_ROLE != "admin":
+            print("SECURITY ALERT: Access Denied.")
+        else:
+            func()
+    return checker
+
+@require_admin
+def nuke_database():
+    print("Database completely destroyed.")
+
+nuke_database()
+
+CURRENT_USER_ROLE = "admin"
+nuke_database()

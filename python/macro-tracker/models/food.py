@@ -1,35 +1,59 @@
-class NoStringError(Exception):
-    pass
-
 class Food:
-
-    protein_cal = 4
-    carbs_cal = 4
-    fats_cal = 9
-
-    def __init__(self, name, gprotein, gcarbs, gfats):
-        if not isinstance(name, str) or not name.strip():
-            raise NoStringError(f"{name} must be a complete string.")
-        
-        for label, val in [("gprotein", gprotein), ("gcarbs", gcarbs), ("gfats", gfats)]:
-            if not isinstance(val, (int, float)):
-                raise TypeError(f"{label} must be a number.")
-            if val < 0:
-                raise ValueError(f"{label} can't be negative.")
-        
+    def __init__(self, name, protein, carbs, fat):
         self.name = name
-        self.gprotein = gprotein
-        self.gcarbs = gcarbs
-        self.gfats = gfats
-        
-    def calculate_calories(self):
-        total_protein_cals = self.gprotein * Food.protein_cal
-        total_carbs_cals = self.gcarbs * Food.carbs_cal
-        total_fats_cals = self.gfats * Food.fats_cal
-        
-        total = total_protein_cals + total_carbs_cals + total_fats_cals
+        self.protein = protein
+        self.carbs = carbs
+        self.fat = fat
 
-        return total
+    @property
+    def name(self):
+        return self._name
     
-    def __str__(self):
-        return f"{self.name}; Protein: {self.gprotein}g; Carbs: {self.gcarbs}g; Fats: {self.gfats}g || {self.calculate_calories()} kcal."
+    @property
+    def protein(self):
+        return self._protein
+    
+    @property
+    def carbs(self):
+        return self._carbs
+    
+    @property
+    def fat(self):
+        return self._fat
+
+    @name.setter
+    def name(self, new_name):
+        if not isinstance(new_name, str) or not new_name.strip():
+            raise TypeError(f"name must be a complete string.")
+        self._name = new_name
+
+    @protein.setter
+    def protein(self, new_protein):
+        if not isinstance(new_protein, (int, float)):
+            raise TypeError(f"Protein value must be numerical. Got: '{new_protein}' ({type(new_protein).__name__}).")
+        if new_protein < 0:
+            raise ValueError(f"Protein value cannot be less than 0. Got: {new_protein}.")
+        self._protein = new_protein
+    
+    @carbs.setter
+    def carbs(self, new_carbs):
+        if not isinstance(new_carbs, (int, float)):
+            raise TypeError(f"Carbs value must be numerical. Got: '{new_carbs}' ({type(new_carbs).__name__}).")
+        if new_carbs < 0:
+            raise ValueError(f"Carbs value cannot be less than 0. Got: {new_carbs}.")
+        self._carbs = new_carbs
+    
+    @fat.setter
+    def fat(self, new_fat):
+        if not isinstance(new_fat, (int, float)):
+            raise TypeError(f"Fat value must be numerical. Got: '{new_fat}' ({type(new_fat).__name__}).")
+        if new_fat < 0:
+            raise ValueError(f"Fat value cannot be less than 0. Got: {new_fat}.")
+        self._fat = new_fat
+    
+    def __repr__(self):
+        return f"Food(name='{self.name}', protein={self.protein}, carbs={self.carbs}, fat={self.fat})"
+
+myfood1 = Food('Chicken Breast', 31, 0, 3.6)
+
+print(repr(myfood1))
