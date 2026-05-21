@@ -30,34 +30,34 @@ class User:
     @property
     def name(self):
         return self._name
-    
+
     @property
     def age(self):
         return self._age
-    
+
     @property
     def sex(self):
         return self._sex
-    
+
     @property
     def height_cm(self):
         return self._height_cm
-    
+
     @property
     def weight_kg(self):
         return self._weight_kg
-    
+
     @property
     def activity_level(self):
         return self._activity_level
-
+    
     @name.setter
     def name(self, new_name):
         if not isinstance(new_name, str) or not new_name.strip():
             raise TypeError(f"'Name' cannot be empty / Must be a string.")
         
         self._name = new_name
-    
+
     @age.setter
     def age(self, new_age):
         if not isinstance(new_age, int):
@@ -68,7 +68,7 @@ class User:
             raise AbnormalAgeError(f"Age must be between 12 and 150.")
         
         self._age = new_age
-    
+
     @sex.setter
     def sex(self, new_sex):
         if not isinstance(new_sex, str):
@@ -127,8 +127,3 @@ class User:
 
     def __repr__(self):
         return f"User(name='{self.name}', age={self.age}, sex='{self.sex}', height={self.height_cm}, weight={self.weight_kg}, activity_level='{self.activity_level}')"
-
-myuser1 = User('Marcel', 18, ' male ', 170, 80, 'VERY active   ')
-
-print(repr(myuser1))
-print(f"TDEE: {myuser1.tdee} kcal")
