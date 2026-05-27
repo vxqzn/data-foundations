@@ -86,7 +86,7 @@ class User:
         if not isinstance(new_height, (int, float)):
             raise TypeError(f"Height must be a numerical value.")
         if new_height < 100 or new_height > 300:
-            raise AbnormalHeightOrWeightError(f"Height must be between 100cm and 300cm")
+            raise AbnormalHeightOrWeightError(f"Height must be between 100cm and 300cm.")
         
         self._height_cm = new_height
 
