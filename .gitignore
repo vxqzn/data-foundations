@@ -2,10 +2,7 @@
 venv/
 .env
 
-# Python
+# Python Cache & Tests
 __pycache__/
 *.pyc
-
-# OS Files
-.DS_Store
-Thumbs.db
+.pytest_cache/

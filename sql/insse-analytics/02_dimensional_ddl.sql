@@ -5,26 +5,26 @@ DROP TABLE IF EXISTS dim_location;
 DROP INDEX IF EXISTS idx_facts;
 
 CREATE TABLE dim_caen (
-	caen_key SERIAL PRIMARY KEY,
-	caen_description TEXT
+    caen_key SERIAL PRIMARY KEY,
+    caen_description TEXT
 );
 
 CREATE TABLE dim_company_size (
-	size_key SERIAL PRIMARY KEY,
-	size_description TEXT
+    size_key SERIAL PRIMARY KEY,
+    size_description TEXT
 );
 
 CREATE TABLE dim_location (
-	location_key SERIAL PRIMARY KEY,
-	location_name TEXT
+    location_key SERIAL PRIMARY KEY,
+    location_name TEXT
 );
 
 CREATE TABLE fact_turnover (
-	caen_key INT REFERENCES dim_caen(caen_key),
-	size_key INT REFERENCES dim_company_size(size_key),
-	location_key INT REFERENCES dim_location(location_key),
-	an INT,
-	valoare_ron NUMERIC
+    caen_key INT REFERENCES dim_caen(caen_key),
+    size_key INT REFERENCES dim_company_size(size_key),
+    location_key INT REFERENCES dim_location(location_key),
+    an INT,
+    valoare_ron NUMERIC
 );
 
 CREATE INDEX idx_facts ON fact_turnover(location_key, size_key, caen_key, an);

@@ -15,7 +15,7 @@ WITH cte_county_base AS (
         ft.an AS an,
         l.location_name AS location_name,
         c.caen_description AS caen_description,
-        SUM(valoare_ron) AS total_value
+        SUM(ft.valoare_ron) AS total_value
     FROM fact_turnover AS ft
     INNER JOIN dim_location AS l
         ON ft.location_key = l.location_key
@@ -75,21 +75,21 @@ EXPLAIN ANALYZE
 SELECT
     l.location_name,
     c.caen_description,
-    f.an,
-    f.valoare_ron,
-    SUM(f.valoare_ron) OVER(
+    ft.an,
+    ft.valoare_ron,
+    SUM(ft.valoare_ron) OVER(
         PARTITION BY l.location_name, c.caen_description
-        ORDER BY f.an
+        ORDER BY ft.an
         ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
     ) AS running_total_turnover
-FROM fact_turnover AS f
+FROM fact_turnover AS ft
 INNER JOIN dim_location AS l
-    ON f.location_key = l.location_key
+    ON ft.location_key = l.location_key
 INNER JOIN dim_caen AS c
-    ON f.caen_key = c.caen_key
+    ON ft.caen_key = c.caen_key
 INNER JOIN dim_company_size AS s
-    ON f.size_key = s.size_key
+    ON ft.size_key = s.size_key
 WHERE s.size_description ILIKE '%Total%'
     AND (c.caen_description ILIKE '%sanatate%' OR c.caen_description ILIKE '%constructii%' OR c.caen_description ILIKE '%invatamant%')
     AND TRIM(l.location_name) IN ('Timis', 'Arad', 'Sibiu', 'Alba')
-    AND f.an BETWEEN 2016 AND 2024;
+    AND ft.an BETWEEN 2016 AND 2024;
