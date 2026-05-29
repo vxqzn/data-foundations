@@ -1,3 +1,4 @@
+import pytest
 from models.day import Day
 from models.week import Week
 

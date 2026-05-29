@@ -15,9 +15,9 @@ WHERE macroregiuni IS NOT NULL;
 
 INSERT INTO fact_turnover(caen_key, size_key, location_key, an, valoare_ron)
 SELECT
-    dim_caen.caen_key,
-    dim_cs.size_key,
-    dim_location.location_key,
+    c.caen_key,
+    s.size_key,
+    l.location_key,
     REPLACE(stg.ani, 'Anul ', '')::INT AS an,
     CASE 
         WHEN stg.unitate_de_masura ILIKE '%Miliarde%' THEN (stg.valoare::NUMERIC * 1000000000) 
@@ -26,9 +26,9 @@ SELECT
         ELSE stg.valoare::NUMERIC
     END AS valoare_ron
 FROM stg_insse_turnover AS stg
-INNER JOIN dim_caen
-    ON stg.activitati_economie_nationala = dim_caen.caen_description
-INNER JOIN dim_company_size AS dim_cs
-    ON stg.clasa_de_marime = dim_cs.size_description
-INNER JOIN dim_location
-    ON stg.macroregiuni = dim_location.location_name;
+INNER JOIN dim_caen AS c
+    ON stg.activitati_economie_nationala = c.caen_description
+INNER JOIN dim_company_size AS s
+    ON stg.clasa_de_marime = s.size_description
+INNER JOIN dim_location AS l
+    ON stg.macroregiuni = l.location_name;
