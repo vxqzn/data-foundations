@@ -9,21 +9,7 @@ CREATE TABLE stg_insse_turnover (
     valoare TEXT
 );
 
-/*
--- if you're loading from CSV directly
 
-COPY stg_insse_turnover
-FROM '(PATH)/data-foundations/sql/insse_turnover_22_24.csv'
-DELIMITER ','
-CSV HEADER;
-
-*/
-
-
-/* 
--- if you pre-imported via DBeaver
-
+-- After importing "insse_turnover_22_24.csv" into a "insse_turnover" DBeaver table
 INSERT INTO stg_insse_turnover
 SELECT * FROM insse_turnover;
-
-*/

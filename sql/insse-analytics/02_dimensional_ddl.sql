@@ -4,8 +4,6 @@ DROP TABLE IF EXISTS dim_company_size;
 DROP TABLE IF EXISTS dim_location;
 DROP INDEX IF EXISTS idx_facts;
 
-CREATE INDEX idx_facts ON fact_turnover(location_key, size_key, caen_key, an);
-
 CREATE TABLE dim_caen (
 	caen_key SERIAL PRIMARY KEY,
 	caen_description TEXT
@@ -28,3 +26,5 @@ CREATE TABLE fact_turnover (
 	an INT,
 	valoare_ron NUMERIC
 );
+
+CREATE INDEX idx_facts ON fact_turnover(location_key, size_key, caen_key, an);

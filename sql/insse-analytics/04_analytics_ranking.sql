@@ -32,9 +32,9 @@ cte_with_lag AS (
         location_name,
         caen_description,
         total_value,
-        LAG(cte_county_base.total_value, 1) OVER(
-            PARTITION BY cte_county_base.location_name, cte_county_base.caen_description 
-            ORDER BY cte_county_base.an
+        LAG(total_value, 1) OVER(
+            PARTITION BY location_name, caen_description 
+            ORDER BY an
         ) AS prev_value
     FROM cte_county_base
 ),
