@@ -60,7 +60,7 @@ class User:
 
     @age.setter
     def age(self, new_age):
-        if not isinstance(new_age, int):
+        if isinstance(new_age, bool) or not isinstance(new_age, int):
             raise TypeError(f"Age must be a whole number (int).")
         if new_age < 12:
             raise NotOldEnoughError(f"Must be at least 12 years old.")
@@ -83,7 +83,7 @@ class User:
 
     @height_cm.setter
     def height_cm(self, new_height):
-        if not isinstance(new_height, (int, float)):
+        if isinstance(new_height, bool) or not isinstance(new_height, (int, float)):
             raise TypeError(f"Height must be a numerical value.")
         if new_height < 100 or new_height > 300:
             raise AbnormalHeightOrWeightError(f"Height must be between 100cm and 300cm.")
@@ -92,7 +92,7 @@ class User:
 
     @weight_kg.setter
     def weight_kg(self, new_weight):
-        if not isinstance(new_weight, (int, float)):
+        if isinstance(new_weight, bool) or not isinstance(new_weight, (int, float)):
             raise TypeError(f"Weight must be a numerical value.")
         if new_weight < 20 or new_weight > 400:
             raise AbnormalHeightOrWeightError(f"Weight must be between 20kg and 400kg.")

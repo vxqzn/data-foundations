@@ -54,7 +54,7 @@ class Day:
         self._user = new_user
 
     def add_meal(self, meal_instance):
-        if not isinstance(meal_instance, Meal):
+        if isinstance(meal_instance, bool) or not isinstance(meal_instance, Meal):
             raise TypeError(f"Invalid meal.")
 
         self._entries.append(meal_instance)

@@ -35,7 +35,7 @@ class Meal:
 
     @weight_g.setter
     def weight_g(self, new_weight_g):
-        if not isinstance(new_weight_g, (int, float)):
+        if isinstance(new_weight_g, bool) or not isinstance(new_weight_g, (int, float)):
             raise TypeError(f"Weight(grams) must be a number. Got: '{new_weight_g}' ({type(new_weight_g).__name__}).")
         if new_weight_g < 0:
             raise ValueError(f"Weight(grams) value cannot be less than 0. Got: {new_weight_g}.")

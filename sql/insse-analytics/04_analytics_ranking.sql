@@ -26,17 +26,18 @@ WITH cte_county_base AS (
         l.location_name,
         c.caen_description
 ),
-cte_with_lag AS (
+cte_prev_yr AS (
     SELECT
-        an,
-        location_name,
-        caen_description,
-        total_value,
-        LAG(total_value, 1) OVER(
-            PARTITION BY location_name, caen_description 
-            ORDER BY an
-        ) AS prev_value
-    FROM cte_county_base
+        c.an,
+        c.location_name,
+        c.caen_description,
+        c.total_value,
+        p.total_value AS prev_value
+    FROM cte_county_base AS c
+    LEFT JOIN cte_county_base AS p
+        ON c.location_name = p.location_name
+        AND c.caen_description = p.caen_description
+        AND c.an = p.an + 1
 ),
 cte_yoy_growth AS (
     SELECT
@@ -46,7 +47,7 @@ cte_yoy_growth AS (
         total_value,
         prev_value,
         (total_value - prev_value) / NULLIF(prev_value, 0) AS yoy_growth
-    FROM cte_with_lag
+    FROM cte_prev_yr
 ),
 cte_market_share AS (
     SELECT
@@ -66,7 +67,7 @@ SELECT
     total_value,
     yoy_growth,
     market_share_pct,
-    DENSE_RANK() OVER(PARTITION BY an, caen_description ORDER BY yoy_growth DESC) AS growth_rank
+    DENSE_RANK() OVER(PARTITION BY an, caen_description ORDER BY yoy_growth DESC NULLS LAST) AS growth_rank
 FROM cte_market_share;
 
 -- Runs a heavy query on the database, forcing a sequential scan through a large number of rows (to be used as efficiency reference for pre-indexing and post-indexing)

@@ -9,6 +9,14 @@ def sample_user():
     return User("Toni", 25, "Male", 180, 80, "Sedentary")
 
 @pytest.fixture
+def sample_user_female():
+    return User("Tania", 25, "Female", 160, 56, "Moderately Active")
+
+@pytest.fixture
+def sample_user_male():
+    return User("Marcel", 32, "Male", 192, 88, "Very Active")
+
+@pytest.fixture
 def protein_shake():
     return Food("Protein Shake", 30, 5, 1)
 

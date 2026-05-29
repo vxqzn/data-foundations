@@ -30,7 +30,7 @@ class Food:
 
     @protein.setter
     def protein(self, new_protein):
-        if not isinstance(new_protein, (int, float)):
+        if isinstance(new_protein, bool) or not isinstance(new_protein, (int, float)):
             raise TypeError(f"Protein value must be numerical. Got: '{new_protein}' ({type(new_protein).__name__}).")
         if new_protein < 0:
             raise ValueError(f"Protein value cannot be less than 0. Got: {new_protein}.")
@@ -39,7 +39,7 @@ class Food:
 
     @carbs.setter
     def carbs(self, new_carbs):
-        if not isinstance(new_carbs, (int, float)):
+        if isinstance(new_carbs, bool) or not isinstance(new_carbs, (int, float)):
             raise TypeError(f"Carbs value must be numerical. Got: '{new_carbs}' ({type(new_carbs).__name__}).")
         if new_carbs < 0:
             raise ValueError(f"Carbs value cannot be less than 0. Got: {new_carbs}.")
@@ -48,7 +48,7 @@ class Food:
 
     @fat.setter
     def fat(self, new_fat):
-        if not isinstance(new_fat, (int, float)):
+        if isinstance(new_fat, bool) or not isinstance(new_fat, (int, float)):
             raise TypeError(f"Fat value must be numerical. Got: '{new_fat}' ({type(new_fat).__name__}).")
         if new_fat < 0:
             raise ValueError(f"Fat value cannot be less than 0. Got: {new_fat}.")

@@ -49,3 +49,9 @@ def test_user_empty_name_type_raises_type_err():
         User(" ", 18, "Male", 170, 60, "Incredibly Active")
 
     assert "'Name' cannot be empty / Must be a string." in str(ex_info.value)
+
+def test_user_male_tdee_calculation(sample_user_female):
+    assert sample_user_female.tdee == 1975
+
+def test_user_male_tdee_calculation(sample_user_male):
+    assert sample_user_male.tdee == 3321

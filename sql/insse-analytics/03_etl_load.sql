@@ -20,10 +20,10 @@ SELECT
     l.location_key,
     REPLACE(stg.ani, 'Anul ', '')::INT AS an,
     CASE 
-        WHEN stg.unitate_de_masura ILIKE '%Miliarde%' THEN (stg.valoare::NUMERIC * 1000000000) 
-        WHEN stg.unitate_de_masura ILIKE '%Milioane%' THEN (stg.valoare::NUMERIC * 1000000)
-        WHEN stg.unitate_de_masura ILIKE '%Mii%' THEN (stg.valoare::NUMERIC * 1000)
-        ELSE stg.valoare::NUMERIC
+        WHEN stg.unitate_de_masura ILIKE '%Miliarde%' THEN (NULLIF(REGEXP_REPLACE(stg.valoare, '[^0-9.]', '', 'g'), '')::NUMERIC * 1000000000) 
+        WHEN stg.unitate_de_masura ILIKE '%Milioane%' THEN (NULLIF(REGEXP_REPLACE(stg.valoare, '[^0-9.]', '', 'g'), '')::NUMERIC * 1000000)
+        WHEN stg.unitate_de_masura ILIKE '%Mii%' THEN (NULLIF(REGEXP_REPLACE(stg.valoare, '[^0-9.]', '', 'g'), '')::NUMERIC * 1000)
+        ELSE NULLIF(REGEXP_REPLACE(stg.valoare, '[^0-9.]', '', 'g'), '')::NUMERIC
     END AS valoare_ron
 FROM stg_insse_turnover AS stg
 INNER JOIN dim_caen AS c
