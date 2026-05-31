@@ -28,11 +28,11 @@ A composite index was applied to the fact table: `CREATE INDEX idx_facts ON fact
 | **Scan Type** | Sequential Scan (fact_turnover) | Bitmap Index Scan (idx_facts) | Optimized |
 
 ### Reference Logs and Export Results
-* Raw Pre-Index Execution Plan: [h_query_pre_index.txt](insse-analytics/results/h_query_pre_index.txt)
-* Raw Post-Index Execution Plan: [h_query_post_index.txt](insse-analytics/results/h_query_post_index.txt)
-* Top 5 Counties by Turnover: [top_5_counties.csv](insse-analytics/results/top_5_counties.csv)
-* YoY Growth and National Market Share Rank: [market_share_yoy.csv](insse-analytics/results/market_share_yoy.csv)
-* Heavy Query Execution Results: [heavy_query_results.csv](insse-analytics/results/heavy_query_results.csv)
+* Raw Pre-Index Execution Plan: [h_query_pre_index.txt](results/h_query_pre_index.txt)
+* Raw Post-Index Execution Plan: [h_query_post_index.txt](results/h_query_post_index.txt)
+* Top 5 Counties by Turnover: [top_5_counties.csv](results/top_5_counties.csv)
+* YoY Growth and National Market Share Rank: [market_share_yoy.csv](results/market_share_yoy.csv)
+* Heavy Query Execution Results: [heavy_query_results.csv](results/heavy_query_results.csv)
 
 ### Local DBeaver Import Guide
 To replicate the analytics and run the SQL scripts locally:
