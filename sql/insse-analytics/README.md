@@ -71,11 +71,11 @@ A fost aplicat un index compus pe tabela de facte: `CREATE INDEX idx_facts ON fa
 | **Tip Scanare** | Scanare Secventiala (fact_turnover) | Scanare Index Bitmap (idx_facts) | Optimizat |
 
 ### Fisiere de Log si Rezultate Exportate
-* Plan de Executie Pre-Index (Raw Log): [h_query_pre_index.txt](insse-analytics/results/h_query_pre_index.txt)
-* Plan de Executie Post-Index (Raw Log): [h_query_post_index.txt](insse-analytics/results/h_query_post_index.txt)
-* Top 5 Judete dupa Cifra de Afaceri: [top_5_counties.csv](insse-analytics/results/top_5_counties.csv)
-* Cresterea YoY si Cota de Piata Nationala: [market_share_yoy.csv](insse-analytics/results/market_share_yoy.csv)
-* Rezultatele Interogarii Complexe: [heavy_query_results.csv](insse-analytics/results/heavy_query_results.csv)
+* Plan de Executie Pre-Index (Raw Log): [h_query_pre_index.txt](results/h_query_pre_index.txt)
+* Plan de Executie Post-Index (Raw Log): [h_query_post_index.txt](results/h_query_post_index.txt)
+* Top 5 Judete dupa Cifra de Afaceri: [top_5_counties.csv](results/top_5_counties.csv)
+* Cresterea YoY si Cota de Piata Nationala: [market_share_yoy.csv](results/market_share_yoy.csv)
+* Rezultatele Interogarii Complexe: [heavy_query_results.csv](results/heavy_query_results.csv)
 
 ### Ghid de Import local in DBeaver
 Pentru a rula interogarile si scripturile SQL local:
