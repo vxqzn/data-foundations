@@ -31,9 +31,9 @@ The business rules and calculations are backed by a comprehensive Pytest suite:
    ```bash
    cd python/macro-tracker
    ```
-2. Install pytest:
+2. Install requirements:
    ```bash
-   pip install pytest
+   pip install -r requirements.txt
    ```
 3. Run the test suite:
    ```bash
@@ -69,11 +69,11 @@ Toate regulile de business si calculele matematice sunt acoperite de o suita de 
    ```bash
    cd python/macro-tracker
    ```
-2. Instalare pytest:
+2. Instalare dependente:
    ```bash
-   pip install pytest
+   pip install -r requirements.txt
    ```
-3. Rulare suita de teste:
+3. Executare pytest:
    ```bash
    python -m pytest
    ```
