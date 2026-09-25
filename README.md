@@ -29,18 +29,26 @@ The benchmark query evaluates cumulative running turnover across a targeted coho
 
 ```mermaid
 flowchart TD
-    subgraph PreIndex["Pre-Index Execution (7.619 ms | 10,825 Buffers)"]
-        A1["Seq Scan on fact_turnover\n(4,914 candidate rows scanned)"] --> B1["Nested Loop on dim_location_pkey\n(4,914 individual index probes -> 9,828 buffer hits)"]
-        B1 --> C1["Nested Loop on dim_caen_pkey\n(468 loops -> 936 buffer hits)"]
-        C1 --> D1["In-Memory Quicksort (31 kB) & WindowAgg\n-> 108 running-total rows"]
+    classDef preNode fill:#2d1b1b,stroke:#f87171,stroke-width:1px,color:#fee2e2;
+    classDef postNode fill:#132e27,stroke:#34d399,stroke-width:1px,color:#ecfdf5;
+    classDef sharedNode fill:#1e293b,stroke:#94a3b8,stroke-width:1px,color:#f8fafc;
+
+    subgraph PreIndex["PRE-INDEX EXECUTION: 7.619 ms | 10,825 Buffer Hits (Unindexed Scan)"]
+        direction LR
+        A1["Seq Scan on fact_turnover<br/><b>4,914 candidate rows scanned</b>"]:::preNode --> B1["Nested Loop on dim_location_pkey<br/><b>4,914 individual index probes</b><br/>(9,828 buffer hits | 90.8% I/O)"]:::preNode
+        B1 --> C1["Nested Loop on dim_caen_pkey<br/><b>468 loops -> 936 buffer hits</b>"]:::preNode
+        C1 --> D1["In-Memory Quicksort & WindowAgg<br/><b>108 running-total rows</b>"]:::sharedNode
     end
 
-    subgraph PostIndex["Post-Index Execution (2.401 ms | 2,587 Buffers)"]
-        A2["Index Scan on dim_caen\n(3 sector rows identified first)"] --> B2["Bitmap Index Scan on idx_facts\n(Prunes fact candidates directly to 1,134 rows)"]
-        B2 --> C2["Memoize Cache on dim_company_size\n(1,133 cache hits / 1 miss at 1 kB memory)"]
-        C2 --> D2["Index Scan on dim_location_pkey\n(Reduced to 1,134 probes -> 2,268 buffer hits)"]
-        D2 --> E2["In-Memory Quicksort (31 kB) & WindowAgg\n-> 108 running-total rows"]
+    subgraph PostIndex["POST-INDEX EXECUTION (idx_facts): 2.401 ms | 2,587 Buffer Hits (-68.4% Latency)"]
+        direction LR
+        A2["Index Scan on dim_caen<br/><b>3 sector rows filtered first</b>"]:::postNode --> B2["Bitmap Index Scan on idx_facts<br/><b>Prunes fact rows directly to 1,134</b>"]:::postNode
+        B2 --> C2["Memoize Cache on dim_company_size<br/><b>1,133 cache hits / 1 miss (1 kB)</b>"]:::postNode
+        C2 --> D2["Index Scan on dim_location_pkey<br/><b>Slashing probes to 1,134 (2,268 hits)</b>"]:::postNode
+        D2 --> E2["In-Memory Quicksort & WindowAgg<br/><b>108 running-total rows</b>"]:::sharedNode
     end
+
+    PreIndex -->|Composite Index Applied| PostIndex
 ```
 
 * **Pre-Index Bottleneck ([`results/h_query_pre_index.txt`](sql/insse-analytics/results/h_query_pre_index.txt)):** The unindexed query forced a full sequential table scan across all 9,279 rows followed by **4,914 repeated nested loop lookups** on `dim_location_pkey`. This generated 9,828 shared buffer hits (**90.8% of total query I/O**) solely to evaluate and discard non-target counties.
