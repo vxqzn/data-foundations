@@ -1,0 +1,45 @@
+WindowAgg  (cost=416.10..416.13 rows=1 width=106) (actual time=2.306..2.365 rows=108.00 loops=1)
+  Window: w1 AS (PARTITION BY l.location_name, c.caen_description ORDER BY f.an ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+  Storage: Memory  Maximum Storage: 17kB
+  Buffers: shared hit=2587
+  ->  Sort  (cost=416.10..416.11 rows=1 width=74) (actual time=2.297..2.301 rows=108.00 loops=1)
+        Sort Key: l.location_name, c.caen_description, f.an
+        Sort Method: quicksort  Memory: 31kB
+        Buffers: shared hit=2587
+        ->  Nested Loop  (cost=268.83..416.09 rows=1 width=74) (actual time=0.318..2.214 rows=108.00 loops=1)
+              Buffers: shared hit=2587
+              ->  Nested Loop  (cost=268.68..415.90 rows=1 width=46) (actual time=0.242..1.114 rows=1134.00 loops=1)
+                    Buffers: shared hit=319
+                    ->  Nested Loop  (cost=268.52..415.49 rows=4 width=50) (actual time=0.234..0.795 rows=1134.00 loops=1)
+                          Buffers: shared hit=317
+                          ->  Index Scan using dim_caen_pkey on dim_caen c  (cost=0.15..76.73 rows=1 width=36) (actual time=0.034..0.046 rows=3.00 loops=1)
+                                Filter: ((caen_description ~~* '%sanatate%'::text) OR (caen_description ~~* '%constructii%'::text) OR (caen_description ~~* '%invatamant%'::text))
+                                Rows Removed by Filter: 10
+                                Index Searches: 1
+                                Buffers: shared hit=2
+                          ->  Bitmap Heap Scan on fact_turnover f  (cost=268.37..334.98 rows=378 width=22) (actual time=0.154..0.202 rows=378.00 loops=3)
+                                Recheck Cond: ((caen_key = c.caen_key) AND (an >= 2016) AND (an <= 2024))
+                                Heap Blocks: exact=132
+                                Buffers: shared hit=315
+                                ->  Bitmap Index Scan on idx_facts  (cost=0.00..268.27 rows=378 width=0) (actual time=0.146..0.146 rows=378.00 loops=3)
+                                      Index Cond: ((caen_key = c.caen_key) AND (an >= 2016) AND (an <= 2024))
+                                      Index Searches: 75
+                                      Buffers: shared hit=183
+                    ->  Memoize  (cost=0.16..0.19 rows=1 width=4) (actual time=0.000..0.000 rows=1.00 loops=1134)
+                          Cache Key: f.size_key
+                          Cache Mode: logical
+                          Hits: 1133  Misses: 1  Evictions: 0  Overflows: 0  Memory Usage: 1kB
+                          Buffers: shared hit=2
+                          ->  Index Scan using dim_company_size_pkey on dim_company_size s  (cost=0.15..0.18 rows=1 width=4) (actual time=0.005..0.005 rows=1.00 loops=1)
+                                Index Cond: (size_key = f.size_key)
+                                Filter: (size_description ~~* '%Total%'::text)
+                                Index Searches: 1
+                                Buffers: shared hit=2
+              ->  Index Scan using dim_location_pkey on dim_location l  (cost=0.15..0.19 rows=1 width=36) (actual time=0.001..0.001 rows=0.10 loops=1134)
+                    Index Cond: (location_key = f.location_key)
+                    Filter: (TRIM(BOTH FROM location_name) = ANY ('{Timis,Arad,Sibiu,Alba}'::text[]))
+                    Rows Removed by Filter: 1
+                    Index Searches: 1134
+                    Buffers: shared hit=2268
+Planning Time: 0.297 ms
+Execution Time: 2.401 ms
