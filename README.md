@@ -1,8 +1,8 @@
-# INSSE Analytics: Romanian National Economy Data Warehouse & Query Optimization
+# INSSE Analytics: Romanian National Economy Dimensional Modeling & SQL Analytics
 
-A production-grade PostgreSQL dimensional data warehouse modeling Romanian county-level economic turnover data across 9,279 historical records from the National Institute of Statistics (INSSE). 
+A normalized PostgreSQL dimensional data model and analytical query suite analyzing Romanian county-level economic turnover across 9,279 historical records from the National Institute of Statistics (INSSE). 
 
-The warehouse models **100% of Romania's geographical economy across all 42 administrative divisions (all 41 counties plus Municipiul București)**, spanning 13 primary CAEN Rev.2 industry sectors over 17 continuous years (2008–2024). It features automated ETL sanitization, dynamic currency scale harmonization, advanced windowed analytical CTEs, and execution plan optimization verified via `EXPLAIN ANALYZE`—reducing analytical query latency by **-68.4%** and memory page accesses by **-76.1%**.
+The schema models **100% of Romania's geographical economy across all 42 administrative divisions (all 41 counties plus Municipiul București)**, spanning 13 primary CAEN Rev.2 industry sectors over 17 continuous years (2008–2024). It features automated ETL sanitization, dynamic currency scale harmonization, advanced windowed analytical CTEs, and execution plan optimization verified via `EXPLAIN ANALYZE`—reducing analytical query latency by **-68.4%** and memory page accesses by **-76.1%** on a multi-join benchmark query.
 
 ---
 
