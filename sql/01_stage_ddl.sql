@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS stg_insse_turnover;
+DROP TABLE IF EXISTS stg_insse_turnover CASCADE;
 
 CREATE TABLE stg_insse_turnover (
     activitati_economie_nationala TEXT,
@@ -8,3 +8,5 @@ CREATE TABLE stg_insse_turnover (
     unitate_de_masura TEXT,
     valoare TEXT
 );
+
+\copy stg_insse_turnover FROM 'data/insse_turnover.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',', NULL '');

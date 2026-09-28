@@ -15,7 +15,7 @@ To evaluate index selectivity, join order inversion, and hash join mechanics und
 CREATE INDEX idx_facts ON fact_turnover(caen_key, an, location_key, size_key);
 
 -- 2. Dimension Index (Enables direct B-Tree county seek and eliminates 1,134 nested loop probes)
-CREATE INDEX idx_dim_location_name ON dim_location(location_name);
+CREATE INDEX idx_location ON dim_location(location_name);
 ```
 
 ### The Stress-Test Cohort
@@ -101,7 +101,7 @@ erDiagram
 ```
 
 * **`fact_turnover`:** Granular fact table storing normalized monetary turnover (`valoare_ron`), annual temporal dimension (`an`), and composite primary key `CONSTRAINT pk_fact_turnover PRIMARY KEY (caen_key, size_key, location_key, an)`. Indexed via prefix-aligned composite B-Tree `idx_facts(caen_key, an, location_key, size_key)`.
-* **`dim_location`:** Complete geographical census of Romania—**all 42 administrative entities** (41 counties plus Bucharest), indexed via `idx_dim_location_name(location_name)` to enable upfront B-Tree seeks and in-memory hash joins.
+* **`dim_location`:** Complete geographical census of Romania—**all 42 administrative entities** (41 counties plus Bucharest), indexed via `idx_location(location_name)` to enable upfront B-Tree seeks and in-memory hash joins.
 * **`dim_caen`:** 13 primary national industry sectors defined under CAEN Rev.2 classifications.
 * **`dim_company_size`:** Enterprise classification classes.
 
