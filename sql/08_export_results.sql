@@ -1,0 +1,3 @@
+\copy (SELECT * FROM vw_geographic_concentration) TO '/results/geographic_concentration.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',', ENCODING 'UTF8');
+\copy (SELECT * FROM vw_sector_growth_trajectory) TO '/results/sector_growth_trajectory.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',', ENCODING 'UTF8');
+\copy (SELECT * FROM vw_firm_turnover_distribution) TO '/results/firm_turnover_distribution.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',', ENCODING 'UTF8');

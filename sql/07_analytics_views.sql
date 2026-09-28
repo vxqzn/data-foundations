@@ -6,7 +6,7 @@ WITH zone_agg AS (
     SELECT
         ft.an,
         CASE
-            WHEN l.location_name IN ('Bucuresti', 'Ilfov') THEN 'bucharest_ilfov'
+            WHEN l.location_name IN ('Municipiul Bucuresti', 'Ilfov') THEN 'bucharest_ilfov'
             WHEN l.location_name IN ('Cluj', 'Timis', 'Brasov', 'Iasi', 'Prahova') THEN 'regional_hubs'
             ELSE 'other_regions'
         END AS economic_zone,

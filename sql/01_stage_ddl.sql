@@ -9,4 +9,4 @@ CREATE TABLE stg_insse_turnover (
     valoare TEXT
 );
 
-\copy stg_insse_turnover FROM 'data/insse_turnover.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',', NULL '');
+\copy stg_insse_turnover FROM '/data/insse_turnover.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',', NULL '');

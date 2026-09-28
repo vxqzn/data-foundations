@@ -1,0 +1,33 @@
+name: ci check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  
+jobs:
+  verify-warehouse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check repository
+        uses: actions/checkout@v7
+
+      - name: install just
+        uses: extractions/setup-just@v4
+
+      - name: start pgsql warehouse
+        run: just up
+      
+      - name: hydrate smoke test dataset (~170k rows)
+        run: just hydrate 10000
+
+      - name: check delta
+        run: just audit
+
+      - name: execute benchmark plan
+        run: just bench
+
+      - name: stop container and volumes
+        if: always()
+        run: just clean

@@ -26,7 +26,7 @@ BEGIN
                 location_key,
                 valoare_ron,
                 SUM (valoare_ron) OVER() AS annual_total,
-                GREATEST(1, ROUND(3764706 * (valoare_ron / SUM(valoare_ron) OVER())))::INT AS slice_firms
+                GREATEST(1, ROUND(COALESCE(NULLIF(current_setting('app.scale_firms', true), ''), '3764706')::NUMERIC * (valoare_ron / SUM(valoare_ron) OVER())))::INT AS slice_firms
             FROM fact_turnover
             WHERE an = v_year AND valoare_ron > 0
         ),

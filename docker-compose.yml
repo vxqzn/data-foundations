@@ -1,5 +1,5 @@
 services:
-  warehouse:
+  insse-warehouse:
     image: postgres:18-alpine
     container_name: insse_warehouse
     environment:
@@ -9,13 +9,14 @@ services:
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - ./sql:/docker-entrypoint-initdb.d:ro
+      - ./sql:/scripts:ro
       - ./data:/data:ro
-      - pgdata:/var/lib/postgresql/data
+      - ./results:/results:rw
+      - pgdata:/var/lib/postgresql
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d insse_dw"]
-      interval: 5s
+      interval: 10s
       timeout: 5s
       retries: 5
 
